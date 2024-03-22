@@ -1,4 +1,5 @@
 import "the-new-css-reset/css/reset.css";
+import stylesheet from "~/style/tailwind.css?url";
 import {
   Links,
   Meta,
@@ -6,7 +7,6 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-import stylesheet from "~/style/tailwind.css?url";
 import type { LinksFunction } from "@remix-run/node";
 
 export const links: LinksFunction = () => [
@@ -15,7 +15,7 @@ export const links: LinksFunction = () => [
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="ja">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
