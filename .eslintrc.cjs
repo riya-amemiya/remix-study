@@ -64,6 +64,23 @@ module.exports = {
             alwaysTryTypes: true,
           },
         },
+        "import/order": [
+          "error",
+          {
+            groups: [
+              "builtin",
+              "external",
+              "internal",
+              "parent",
+              "sibling",
+              "index",
+            ],
+            alphabetize: {
+              order: "asc",
+            },
+            "newlines-between": "always",
+          },
+        ],
       },
       extends: [
         "plugin:@typescript-eslint/recommended",
