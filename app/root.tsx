@@ -20,31 +20,29 @@ import {
 import { useEffect, useState } from "react";
 
 import stylesheet from "~/style/tailwind.css?url";
+import type { Env } from "~/types/env";
 import type { Database } from "~/types/supabase";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
 ];
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  if (!(process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY)) {
+export const loader = async ({ request, context }: LoaderFunctionArgs) => {
+  let env: Env;
+  try {
+    env = process.env as unknown as Env;
+  } catch {
+    env = context.env as Env;
+  }
+  if (!(env.SUPABASE_URL && env.SUPABASE_ANON_KEY)) {
     throw new Error("SUPABASE_URL or SUPABASE_ANON_KEY is not defined");
   }
-  const env = {
-    SUPABASE_URL: process.env.SUPABASE_URL,
-    SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
-  };
-
   const response = new Response();
 
-  const supabase = createServerClient(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_ANON_KEY,
-    {
-      request,
-      response,
-    },
-  );
+  const supabase = createServerClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY, {
+    request,
+    response,
+  });
 
   const {
     data: { session },
