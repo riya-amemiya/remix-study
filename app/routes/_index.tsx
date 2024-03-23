@@ -14,15 +14,18 @@ import { Label } from "~/components/ui/label";
 
 const schema = z.object({
   itemName: z.string().min(1).max(255),
-  description: z.string().min(1).max(255),
+  itemDescription: z.string().min(1).max(255).optional(),
 });
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const submission = parseWithZod(formData, { schema });
   const name = formData.get("itemName");
-  console.log(name);
-  return json({ message: `Hello, ${name}`, submission: submission.reply() });
+  const description = formData.get("itemDescription");
+  return json({
+    message: `Hello, ${name} ${description}`,
+    submission: submission.reply(),
+  });
 }
 
 export const meta: MetaFunction = () => {
@@ -55,6 +58,14 @@ export default function Index() {
             autoComplete="off"
           />
           <div>{fields.itemName.errors}</div>
+        </div>
+        <div>
+          <Label htmlFor={fields.itemDescription.id}>Description</Label>
+          <Input
+            {...getInputProps(fields.itemDescription, { type: "text" })}
+            autoComplete="off"
+          />
+          <div>{fields.itemDescription.errors}</div>
         </div>
         <Button type="submit">Create Todo</Button>
         {data ? data.message : "Waiting..."}
