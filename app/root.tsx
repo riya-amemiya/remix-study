@@ -1,5 +1,5 @@
 import "the-new-css-reset/css/reset.css";
-import stylesheet from "~/style/tailwind.css?url";
+import type { LinksFunction } from "@remix-run/node";
 import {
   Links,
   Meta,
@@ -7,7 +7,8 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-import type { LinksFunction } from "@remix-run/node";
+
+import stylesheet from "~/style/tailwind.css?url";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
@@ -32,5 +33,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <main className="flex items-center justify-center min-h-screen">
+      <Outlet />
+    </main>
+  );
 }
