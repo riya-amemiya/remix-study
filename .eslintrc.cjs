@@ -1,9 +1,3 @@
-/**
- * This is intended to be a basic starting point for linting in your app.
- * It relies on recommended configs out of the box for simplicity, but you can
- * and should modify this configuration to best suit your team's needs.
- */
-
 /** @type {import('eslint').Linter.Config} */
 module.exports = {
   root: true,
@@ -18,6 +12,26 @@ module.exports = {
     browser: true,
     commonjs: true,
     es6: true,
+  },
+  plugins: ["import"],
+  rules: {
+    "import/order": [
+      "error",
+      {
+        groups: [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "sibling",
+          "index",
+        ],
+        alphabetize: {
+          order: "asc",
+        },
+        "newlines-between": "always",
+      },
+    ],
   },
 
   // Base config
@@ -64,23 +78,6 @@ module.exports = {
             alwaysTryTypes: true,
           },
         },
-        "import/order": [
-          "error",
-          {
-            groups: [
-              "builtin",
-              "external",
-              "internal",
-              "parent",
-              "sibling",
-              "index",
-            ],
-            alphabetize: {
-              order: "asc",
-            },
-            "newlines-between": "always",
-          },
-        ],
       },
       extends: [
         "plugin:@typescript-eslint/recommended",
