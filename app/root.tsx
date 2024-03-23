@@ -27,7 +27,6 @@ export const links: LinksFunction = () => [
 ];
 
 export const loader = async ({ request, context }: LoaderFunctionArgs) => {
-  console.log(context);
   let env: Env;
   try {
     env = process.env as unknown as Env;
