@@ -30,7 +30,6 @@ import {
   Table,
 } from "~/components/ui/table";
 import { Textarea } from "~/components/ui/textarea";
-import type { Env } from "~/types/env";
 import type { RootContext } from "~/types/rootContext";
 import type { Database } from "~/types/supabase";
 import type { TypeSafeFormData } from "~/types/typeSafeFormData";

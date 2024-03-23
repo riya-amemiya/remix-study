@@ -20,7 +20,6 @@ import {
 import { useEffect, useState } from "react";
 
 import stylesheet from "~/style/tailwind.css?url";
-import type { Env } from "~/types/env";
 import type { Database } from "~/types/supabase";
 
 export const links: LinksFunction = () => [

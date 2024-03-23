@@ -28,7 +28,8 @@
 			"beforeAll",
 			"afterEach",
 			"afterAll",
-			"React"
+			"React",
+			"Env"
 		]
 	},
 	"json": {
