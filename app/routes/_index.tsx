@@ -89,19 +89,22 @@ export async function action({ request, context }: ActionFunctionArgs) {
     z.infer<typeof schema>
   >;
   const submission = parseWithZod(formData, { schema });
-  const name = formData.get("itemName")?.toString();
-  const description = formData.get("itemDescription")?.toString();
-  const { error } = await supabaseClient.from("todo_list").insert({
-    name,
-    description,
-  });
-  if (error) {
-    return json({ message: error.message, submission: submission.reply() });
+  if (submission.status === "success") {
+    const name = formData.get("itemName")?.toString();
+    const description = formData.get("itemDescription")?.toString();
+    const { error } = await supabaseClient.from("todo_list").insert({
+      name,
+      description,
+    });
+    if (error) {
+      return json({ message: error.message, submission: submission.reply() });
+    }
+    return json({
+      message: "Todo created successfully",
+      submission: submission.reply(),
+    });
   }
-  return json({
-    message: "Todo created successfully",
-    submission: submission.reply(),
-  });
+  return json({ submission: submission.reply() });
 }
 
 export const meta: MetaFunction = () => {
