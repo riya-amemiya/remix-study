@@ -42,11 +42,12 @@ const schema = z.object({
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const response = new Response();
 
+  if (!(process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY)) {
+    throw new Error("SUPABASE_URL or SUPABASE_ANON_KEY is not defined");
+  }
   const supabaseClient = createServerClient<Database>(
-    // biome-ignore lint/style/noNonNullAssertion: <explanation>
-    process.env.SUPABASE_URL!,
-    // biome-ignore lint/style/noNonNullAssertion: <explanation>
-    process.env.SUPABASE_ANON_KEY!,
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_ANON_KEY,
     { request, response },
   );
   const { data } = await supabaseClient
@@ -64,11 +65,13 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 export async function action({ request }: ActionFunctionArgs) {
   const response = new Response();
 
+  if (!(process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY)) {
+    throw new Error("SUPABASE_URL or SUPABASE_ANON_KEY is not defined");
+  }
+
   const supabaseClient = createServerClient<Database>(
-    // biome-ignore lint/style/noNonNullAssertion: <explanation>
-    process.env.SUPABASE_URL!,
-    // biome-ignore lint/style/noNonNullAssertion: <explanation>
-    process.env.SUPABASE_ANON_KEY!,
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_ANON_KEY,
     { request, response },
   );
   const formData = (await request.formData()) as unknown as TypeSafeFormData<

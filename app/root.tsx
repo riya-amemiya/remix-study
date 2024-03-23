@@ -27,20 +27,19 @@ export const links: LinksFunction = () => [
 ];
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
+  if (!(process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY)) {
+    throw new Error("SUPABASE_URL or SUPABASE_ANON_KEY is not defined");
+  }
   const env = {
-    // biome-ignore lint/style/noNonNullAssertion: <explanation>
-    SUPABASE_URL: process.env.SUPABASE_URL!,
-    // biome-ignore lint/style/noNonNullAssertion: <explanation>
-    SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY!,
+    SUPABASE_URL: process.env.SUPABASE_URL,
+    SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
   };
 
   const response = new Response();
 
   const supabase = createServerClient(
-    // biome-ignore lint/style/noNonNullAssertion: <explanation>
-    process.env.SUPABASE_URL!,
-    // biome-ignore lint/style/noNonNullAssertion: <explanation>
-    process.env.SUPABASE_ANON_KEY!,
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_ANON_KEY,
     {
       request,
       response,
