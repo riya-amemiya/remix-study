@@ -27,11 +27,12 @@ export const links: LinksFunction = () => [
 ];
 
 export const loader = async ({ request, context }: LoaderFunctionArgs) => {
+  console.log(context);
   let env: Env;
   try {
     env = process.env as unknown as Env;
   } catch {
-    env = context.env as Env;
+    env = context.cloudflare.env as Env;
   }
   if (!(env.SUPABASE_URL && env.SUPABASE_ANON_KEY)) {
     throw new Error("SUPABASE_URL or SUPABASE_ANON_KEY is not defined");
