@@ -26,26 +26,23 @@ export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
 ];
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const env = {
-    // biome-ignore lint/style/noNonNullAssertion: <explanation>
-    SUPABASE_URL: process.env.SUPABASE_URL!,
-    // biome-ignore lint/style/noNonNullAssertion: <explanation>
-    SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY!,
-  };
-
+export const loader = async ({ request, context }: LoaderFunctionArgs) => {
+  console.log(context);
+  let env: Env;
+  try {
+    env = process.env as unknown as Env;
+  } catch {
+    env = context.cloudflare.env as Env;
+  }
+  if (!(env.SUPABASE_URL && env.SUPABASE_ANON_KEY)) {
+    throw new Error("SUPABASE_URL or SUPABASE_ANON_KEY is not defined");
+  }
   const response = new Response();
 
-  const supabase = createServerClient(
-    // biome-ignore lint/style/noNonNullAssertion: <explanation>
-    process.env.SUPABASE_URL!,
-    // biome-ignore lint/style/noNonNullAssertion: <explanation>
-    process.env.SUPABASE_ANON_KEY!,
-    {
-      request,
-      response,
-    },
-  );
+  const supabase = createServerClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY, {
+    request,
+    response,
+  });
 
   const {
     data: { session },

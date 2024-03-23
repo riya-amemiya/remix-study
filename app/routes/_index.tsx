@@ -39,14 +39,20 @@ const schema = z.object({
   itemDescription: z.string().min(1).max(255).optional(),
 });
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const loader = async ({ request, context }: LoaderFunctionArgs) => {
   const response = new Response();
-
+  let env: Env;
+  try {
+    env = process.env as unknown as Env;
+  } catch {
+    env = context.cloudflare.env as Env;
+  }
+  if (!(env.SUPABASE_URL && env.SUPABASE_ANON_KEY)) {
+    throw new Error("SUPABASE_URL or SUPABASE_ANON_KEY is not defined");
+  }
   const supabaseClient = createServerClient<Database>(
-    // biome-ignore lint/style/noNonNullAssertion: <explanation>
-    process.env.SUPABASE_URL!,
-    // biome-ignore lint/style/noNonNullAssertion: <explanation>
-    process.env.SUPABASE_ANON_KEY!,
+    env.SUPABASE_URL,
+    env.SUPABASE_ANON_KEY,
     { request, response },
   );
   const { data } = await supabaseClient
@@ -61,14 +67,22 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   );
 };
 
-export async function action({ request }: ActionFunctionArgs) {
+export async function action({ request, context }: ActionFunctionArgs) {
   const response = new Response();
+  let env: Env;
+  try {
+    env = process.env as unknown as Env;
+  } catch {
+    env = context.cloudflare.env as Env;
+  }
+
+  if (!(env.SUPABASE_URL && env.SUPABASE_ANON_KEY)) {
+    throw new Error("SUPABASE_URL or SUPABASE_ANON_KEY is not defined");
+  }
 
   const supabaseClient = createServerClient<Database>(
-    // biome-ignore lint/style/noNonNullAssertion: <explanation>
-    process.env.SUPABASE_URL!,
-    // biome-ignore lint/style/noNonNullAssertion: <explanation>
-    process.env.SUPABASE_ANON_KEY!,
+    env.SUPABASE_URL,
+    env.SUPABASE_ANON_KEY,
     { request, response },
   );
   const formData = (await request.formData()) as unknown as TypeSafeFormData<
