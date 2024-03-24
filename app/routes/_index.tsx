@@ -140,7 +140,7 @@ export default function Index() {
               {...getInputProps(fields.itemName, { type: "text" })}
               autoComplete="off"
             />
-            <div>{fields.itemName.errors}</div>
+            <div className="text-red-500">{fields.itemName.errors}</div>
           </div>
           <div>
             <Label htmlFor={fields.itemDescription.id}>Description</Label>
