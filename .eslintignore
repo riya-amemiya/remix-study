@@ -1,0 +1,5 @@
+tailwind.config.ts
+app/components/ui/
+node_modules
+/.cache
+/build
