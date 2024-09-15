@@ -19,6 +19,7 @@ import {
 } from "@supabase/auth-helpers-remix";
 import { useEffect, useState } from "react";
 
+import { getEnv } from "~/lib/getEnv";
 import stylesheet from "~/style/tailwind.css?url";
 import type { Database } from "~/types/supabase";
 
@@ -27,12 +28,7 @@ export const links: LinksFunction = () => [
 ];
 
 export const loader = async ({ request, context }: LoaderFunctionArgs) => {
-  let env: Env;
-  try {
-    env = process.env as unknown as Env;
-  } catch {
-    env = context.cloudflare.env as Env;
-  }
+  const env = getEnv(context);
   if (!(env.SUPABASE_URL && env.SUPABASE_ANON_KEY)) {
     throw new Error("SUPABASE_URL or SUPABASE_ANON_KEY is not defined");
   }

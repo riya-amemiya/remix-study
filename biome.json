@@ -9,7 +9,8 @@
 			"module",
 			"*.json",
 			"doc",
-			".next"
+			".next",
+			"build"
 		]
 	},
 	"formatter": {
